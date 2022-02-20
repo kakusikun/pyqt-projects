@@ -1,10 +1,11 @@
-import os
-os.chdir('./Timer')
 import sys
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QLCDNumber, QComboBox, QDialog
+from PyQt5.QtWidgets import QDialog
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QElapsedTimer, QThread, QTimer, Qt
+from PyQt5.QtCore import QElapsedTimer, QTimer, Qt
+
+
+__version__ = '0.0.1'
 
 
 class HintPopUp(QDialog):
@@ -54,12 +55,14 @@ class Ui(QtWidgets.QMainWindow):
             else:
                 if self._remaining_repeat == 0:
                     self._display_timer.stop()
-                    self._remaining_repeat = int(self.repeat_combo.currentText())
+                    self._remaining_repeat = int(
+                        self.repeat_combo.currentText())
                     self.stop()
                 else:
                     self._timer.start()
         else:
-            remaining_secs = self._remaining_secs - (self._timer.elapsed() / 1000)
+            remaining_secs = self._remaining_secs - \
+                (self._timer.elapsed() / 1000)
             hour = int(remaining_secs // (60 * 60))
             remaining_secs %= (60 * 60)
             minute = int(remaining_secs // 60)
@@ -96,7 +99,8 @@ class Ui(QtWidgets.QMainWindow):
         for i in range(1, 100):
             self.repeat_combo.addItem(str(i))
         self.repeat_combo.setCurrentText('1')
-        self.repeat_combo.currentTextChanged.connect(self._set_remaining_repeat)
+        self.repeat_combo.currentTextChanged.connect(
+            self._set_remaining_repeat)
 
         self.repeat_radio.setChecked(True)
         self.repeat_radio.toggled.connect(self._enable_repeat_combo)
@@ -128,7 +132,7 @@ class Ui(QtWidgets.QMainWindow):
                 self._display_timer.start(1000)
             else:
                 self.stop()
-                
+
     def stop(self):
         self._display_timer.stop()
         self.hour_combo.setEnabled(True)
