@@ -1,4 +1,6 @@
 import sys
+# import os
+# os.chdir(os.path.dirname(__file__))
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtGui import QIcon
@@ -152,6 +154,7 @@ class Ui(QtWidgets.QMainWindow):
         self.repeat_radio.setEnabled(True)
 
 
-app = QtWidgets.QApplication(sys.argv)
-window = Ui()
-app.exec_()
+if __name__ == '__main__':
+    app = QtWidgets.QApplication(sys.argv)
+    window = Ui()
+    app.exec_()
