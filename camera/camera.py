@@ -2,7 +2,6 @@ from functools import partial
 import sys
 import os
 import cv2
-from cv2 import VideoCapture
 import numpy as np
 import json
 import platform
@@ -13,9 +12,13 @@ from requests_toolbelt.multipart import decoder
 
 os.chdir(os.path.dirname(__file__))
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QHBoxLayout, QWidget
 from PyQt5.QtGui import QIcon, QImage, QPixmap, QPainter, QPen
 from PyQt5.QtCore import QElapsedTimer, QTimer, Qt, QEvent, QMutex
+
+
+from app_widget import Ui_Form
+from device_layout import Ui_device_layout_widget
 
 
 INIT_HK_RC_THERMAL_XML_STR = '''
@@ -248,10 +251,35 @@ def get_hk_thermal_array(ip: str, vis: bool = False) -> np.ndarray:
     return thermal_result, err
 
 # rtsp://admin:hk888888@10.36.172.100:554/Streaming/Channels/001
-class Ui(QtWidgets.QMainWindow):
+
+
+
+class DeviceLayout(QWidget, Ui_device_layout_widget):
+    def __init__(self):
+        super(DeviceLayout, self).__init__()
+        self.setupUi(self)
+        self.setLayout(self.device_layout)
+        
+        # self.mutex = QMutex()
+        # self.camera = None
+        # self.thermal = None
+        
+class Ui(QWidget, Ui_Form):
     def __init__(self):
         super(Ui, self).__init__()
-        uic.loadUi('misc/thermal_mapping.ui', self)
+        self.setupUi(self)
+        
+        camera_widget = QWidget()
+        camera_widget.setLayout(self.horizontalLayout_16)
+        thermal_widget = QWidget()
+        thermal_widget.setLayout(self.horizontalLayout_17)
+        device_widget = QWidget()
+        device_widget.setLayout(self.device_layout)
+        
+        self.app_tab.addTab(device_widget, 'Device')
+        self.app_tab.addTab(camera_widget, 'Camera')
+        self.app_tab.addTab(thermal_widget, 'Thermal')
+        self.setLayout(self.horizontalLayout_15)
         
         self.mutex = QMutex()
         
@@ -369,18 +397,18 @@ class Ui(QtWidgets.QMainWindow):
         self.is_camera_zoomable = False
         self.is_thermal_zoomable = False
         
-        # h, w, _ = self.camera_img.shape
-        # qimg = QImage(self.camera_img.data, w, h, 3 * w, QImage.Format_RGB888).rgbSwapped()
-        # self.camera_label.setPixmap(QPixmap(qimg))
+        h, w, _ = self.camera_img.shape
+        qimg = QImage(self.camera_img.data, w, h, 3 * w, QImage.Format_RGB888).rgbSwapped()
+        self.camera_label.setPixmap(QPixmap(qimg))
         self.camera_label.installEventFilter(self)
         self.camera_scroll.setWidget(self.camera_label)
         self.camera_scroll.installEventFilter(self)
         self.zoom_camera_label.setScaledContents(True)
         self.zoom_camera_scroll.setWidget(self.zoom_camera_label)
         
-        # h, w, _ = self.thermal_img.shape
-        # qimg = QImage(self.thermal_img.data, w, h, 3 * w, QImage.Format_RGB888).rgbSwapped()
-        # self.thermal_label.setPixmap(QPixmap(qimg))
+        h, w, _ = self.thermal_img.shape
+        qimg = QImage(self.thermal_img.data, w, h, 3 * w, QImage.Format_RGB888).rgbSwapped()
+        self.thermal_label.setPixmap(QPixmap(qimg))
         self.thermal_label.installEventFilter(self)
         self.thermal_scroll.setWidget(self.thermal_label)
         self.thermal_scroll.installEventFilter(self)

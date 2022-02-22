@@ -1,6 +1,6 @@
 import sys
-# import os
-# os.chdir(os.path.dirname(__file__))
+import os
+os.chdir(os.path.dirname(__file__))
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtGui import QIcon
