@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>app_widget</class>
+ <widget class="QWidget" name="app_widget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1606</width>
-    <height>885</height>
+    <width>577</width>
+    <height>524</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -95,16 +95,16 @@
     <string>zoom</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>20</x>
      <y>250</y>
-     <width>507</width>
-     <height>589</height>
+     <width>475</width>
+     <height>219</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_16">
+   <layout class="QHBoxLayout" name="camera_layout">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -114,6 +114,9 @@
         </property>
         <property name="mouseTracking">
          <bool>true</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::StrongFocus</enum>
         </property>
         <property name="verticalScrollBarPolicy">
          <enum>Qt::ScrollBarAlwaysOn</enum>
@@ -129,8 +132,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>229</width>
-           <height>538</height>
+           <width>127</width>
+           <height>168</height>
           </rect>
          </property>
         </widget>
@@ -188,6 +191,9 @@
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="QScrollArea" name="zoom_camera_scroll">
+        <property name="focusPolicy">
+         <enum>Qt::StrongFocus</enum>
+        </property>
         <property name="widgetResizable">
          <bool>true</bool>
         </property>
@@ -196,8 +202,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>245</width>
-           <height>439</height>
+           <width>315</width>
+           <height>69</height>
           </rect>
          </property>
         </widget>
@@ -252,6 +258,19 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
         <item>
+         <spacer name="horizontalSpacer_15">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <layout class="QVBoxLayout" name="pos_camera_vlayout">
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -263,8 +282,11 @@
             </property>
             <item alignment="Qt::AlignLeft">
              <widget class="QRadioButton" name="pos_radio_1">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
-               <string>左上</string>
+               <string>&amp;1 左上</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">pos_camera_radio_group</string>
@@ -310,8 +332,11 @@
             </property>
             <item alignment="Qt::AlignLeft">
              <widget class="QRadioButton" name="pos_radio_2">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
-               <string>左下</string>
+               <string>&amp;2 左下</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">pos_camera_radio_group</string>
@@ -350,8 +375,11 @@
             </property>
             <item alignment="Qt::AlignLeft">
              <widget class="QRadioButton" name="pos_radio_3">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
-               <string>右下</string>
+               <string>&amp;3 右下</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">pos_camera_radio_group</string>
@@ -390,8 +418,11 @@
             </property>
             <item alignment="Qt::AlignLeft">
              <widget class="QRadioButton" name="pos_radio_4">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
-               <string>右上</string>
+               <string>&amp;4 右上</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">pos_camera_radio_group</string>
@@ -422,22 +453,35 @@
           </item>
          </layout>
         </item>
+        <item>
+         <spacer name="horizontalSpacer_14">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
       </item>
      </layout>
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>850</x>
-     <y>250</y>
-     <width>507</width>
-     <height>589</height>
+     <x>10</x>
+     <y>510</y>
+     <width>475</width>
+     <height>219</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_17">
+   <layout class="QHBoxLayout" name="thermal_layout">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
@@ -447,6 +491,9 @@
         </property>
         <property name="mouseTracking">
          <bool>true</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::StrongFocus</enum>
         </property>
         <property name="verticalScrollBarPolicy">
          <enum>Qt::ScrollBarAlwaysOn</enum>
@@ -462,8 +509,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>229</width>
-           <height>538</height>
+           <width>127</width>
+           <height>168</height>
           </rect>
          </property>
         </widget>
@@ -521,6 +568,9 @@
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
        <widget class="QScrollArea" name="zoom_thermal_scroll">
+        <property name="focusPolicy">
+         <enum>Qt::StrongFocus</enum>
+        </property>
         <property name="widgetResizable">
          <bool>true</bool>
         </property>
@@ -529,8 +579,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>245</width>
-           <height>439</height>
+           <width>315</width>
+           <height>69</height>
           </rect>
          </property>
         </widget>
@@ -585,6 +635,19 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
+         <spacer name="horizontalSpacer_17">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <layout class="QVBoxLayout" name="pos_thermal_vlayout">
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -596,8 +659,11 @@
             </property>
             <item alignment="Qt::AlignLeft">
              <widget class="QRadioButton" name="pos_radio_5">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
-               <string>左上</string>
+               <string>&amp;1 左上</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">pos_thermal_radio_group</string>
@@ -643,8 +709,11 @@
             </property>
             <item alignment="Qt::AlignLeft">
              <widget class="QRadioButton" name="pos_radio_6">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
-               <string>左下</string>
+               <string>&amp;2 左下</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">pos_thermal_radio_group</string>
@@ -683,8 +752,11 @@
             </property>
             <item alignment="Qt::AlignLeft">
              <widget class="QRadioButton" name="pos_radio_7">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
-               <string>右下</string>
+               <string>&amp;3 右下</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">pos_thermal_radio_group</string>
@@ -723,8 +795,11 @@
             </property>
             <item alignment="Qt::AlignLeft">
              <widget class="QRadioButton" name="pos_radio_8">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
-               <string>右上</string>
+               <string>&amp;4 右上</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">pos_thermal_radio_group</string>
@@ -755,6 +830,19 @@
           </item>
          </layout>
         </item>
+        <item>
+         <spacer name="horizontalSpacer_16">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
       </item>
      </layout>
@@ -764,9 +852,9 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>430</x>
-     <y>140</y>
-     <width>831</width>
+     <x>460</x>
+     <y>110</y>
+     <width>477</width>
      <height>54</height>
     </rect>
    </property>
@@ -795,7 +883,7 @@
     <item row="0" column="1">
      <widget class="QLineEdit" name="camera_url_line">
       <property name="text">
-       <string>0</string>
+       <string>rtsp://admin:hk888888@10.36.172.100:554/Streaming/Channels/001</string>
       </property>
       <property name="placeholderText">
        <string>0</string>
@@ -829,7 +917,7 @@
     <item row="1" column="3">
      <widget class="QPushButton" name="thermal_test_btn">
       <property name="text">
-       <string>test</string>
+       <string>open</string>
       </property>
      </widget>
     </item>
@@ -843,7 +931,7 @@
     <item row="0" column="3">
      <widget class="QPushButton" name="camera_test_btn">
       <property name="text">
-       <string>test</string>
+       <string>open</string>
       </property>
      </widget>
     </item>
@@ -875,18 +963,21 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>20</y>
-     <width>231</width>
-     <height>821</height>
+     <width>218</width>
+     <height>206</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_15">
+   <layout class="QHBoxLayout" name="app_layout">
     <item>
      <widget class="QTabWidget" name="app_tab">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
       </property>
@@ -920,14 +1011,178 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="snapshot">
+       <widget class="QPushButton" name="snapshot_btn">
         <property name="text">
          <string>snapshot</string>
         </property>
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="mapping_btn">
+        <property name="text">
+         <string>mapping</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="visualize_btn">
+        <property name="text">
+         <string>visualize</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="calculate_btn">
+        <property name="text">
+         <string>calculate</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="vis_label">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>30</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>visualization</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>760</y>
+     <width>291</width>
+     <height>116</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="result_layout">
+    <item>
+     <layout class="QVBoxLayout" name="vis_layout">
+      <item>
+       <widget class="QScrollArea" name="vis_scroll">
+        <property name="cursor" stdset="0">
+         <cursorShape>CrossCursor</cursorShape>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOn</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOn</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents_5">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>127</width>
+           <height>65</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_15">
+        <item>
+         <spacer name="horizontalSpacer_9">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="vis_ratio_spin">
+          <property name="minimum">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>20.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_18">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="stats_layout">
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="result_line"/>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
