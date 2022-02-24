@@ -1,17 +1,12 @@
 from functools import partial
 import sys
-import os
+# import os
 import cv2
 import numpy as np
-import json
-import platform
-import subprocess
-import requests
-from requests.auth import HTTPDigestAuth
-from requests_toolbelt.multipart import decoder
 
-os.chdir(os.path.dirname(__file__))
-from PyQt5 import QtWidgets, uic
+
+# os.chdir(os.path.dirname(os.path.abspath(__file__)))
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QLineEdit, QPushButton
 from PyQt5.QtGui import QIcon, QImage, QPixmap, QPainter, QPen
 from PyQt5.QtCore import QElapsedTimer, QTimer, Qt, QEvent, QMutex
@@ -109,7 +104,7 @@ class Ui(QWidget, Ui_app_widget):
         if self.camera is not None and isinstance(self.camera, cv2.VideoCapture) and self.camera.isOpened():
             ret, frame = self.camera.read()
             if ret:
-                frame = resize_to_width(frame, 1080, 90)
+                frame = resize_to_width(frame, 1080, -90)
                 self.camera_img = frame
                 self.zoom_by_radio('camera', self.camera_label, self.camera_ratio_spin)
             else:
@@ -123,16 +118,14 @@ class Ui(QWidget, Ui_app_widget):
                 thermal_result = thermal_result.copy()
                 # thermal_result[thermal_result < 30] = 0
                 thermal_result = enhance_thermal_contrast(thermal_result, True)
-                thermal_result = resize_to_width(thermal_result, 120, 90)
+                thermal_result = resize_to_width(thermal_result, 120)
                 self.thermal_img = thermal_result
                 self.zoom_by_radio('thermal', self.thermal_label, self.thermal_ratio_spin)
     
     def _visualize(self):
         if len(self.ratios) > 0 and self.camera_img is not None and self.thermal_img is not None:
             self.vis_img = vis(self.camera_img.copy(), self.thermal_img.copy(), self.ratios[-1], self.offsets[-1])
-            h, w, _ = self.vis_img.shape
-            qimg = QImage(self.vis_img.data, w, h, 3 * w, QImage.Format_RGB888).rgbSwapped()
-            self.vis_label.setPixmap(QPixmap(qimg))
+            self.zoom_by_radio('vis', self.vis_label, self.vis_ratio_spin)
     
     def _mapping(self):
         if self.camera_img is not None and self.thermal_img is not None:
@@ -222,7 +215,6 @@ class Ui(QWidget, Ui_app_widget):
         self.camera_scroll.installEventFilter(self)
         # self.zoom_camera_label.setScaledContents(True)
         self.zoom_camera_scroll.setWidget(self.zoom_camera_label)
-        self.camera_label.setAlignment(Qt.AlignCenter)
         self.zoom_camera_label.setAlignment(Qt.AlignCenter)
         
         # h, w, _ = self.thermal_img.shape
@@ -233,7 +225,6 @@ class Ui(QWidget, Ui_app_widget):
         self.thermal_scroll.installEventFilter(self)
         # self.zoom_thermal_label.setScaledContents(True)
         self.zoom_thermal_scroll.setWidget(self.zoom_thermal_label)
-        self.thermal_label.setAlignment(Qt.AlignCenter)
         self.zoom_thermal_label.setAlignment(Qt.AlignCenter)
         
         self.vis_label.setAlignment(Qt.AlignCenter)
@@ -443,14 +434,30 @@ class Ui(QWidget, Ui_app_widget):
         if img is not None:
             ratio = zoom_ratio_spin.value()
             resize = cv2.resize(img, (0, 0), fx=ratio, fy=ratio)
+            if itype == 'camera':
+                self.camera_resize_img = resize
+                h, w, _ = img.shape
+                step = 9
+                xs = np.linspace(start=0, stop=w, num=step)[1:-1]
+                ys = np.linspace(start=0, stop=h, num=step)[1:-1]
+                for x in xs:
+                    img = cv2.line(img, (int(x), 0),
+                                    (int(x), h), (0, 0, 0), 2)
+                for y in ys:
+                    img = cv2.line(img, (0, int(y)),
+                                    (w, int(y)), (0, 0, 0), 2)
+                c_x, c_y = int(xs[3]), int(ys[3])
+                img = cv2.line(img, (c_x, 0),
+                                (c_x, h), (0, 255, 0), 2)
+                img = cv2.line(img, (0, c_y),
+                                (w, c_y), (0, 255, 0), 2)
+                resize = cv2.resize(img, (0, 0), fx=ratio, fy=ratio)
+            else:
+                self.thermal_resize_img = resize
+            
             h, w, _ = resize.shape
             qimg = QImage(resize.data, w, h, 3 * w, QImage.Format_RGB888).rgbSwapped()
             label.setPixmap(QPixmap(qimg))
-            
-            if itype == 'camera':
-                self.camera_resize_img = resize
-            else:
-                self.thermal_resize_img = resize
 
     def delete_stat_widget(self, stat_widget):
         index = self.stats_layout.indexOf(stat_widget)
