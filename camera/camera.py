@@ -1,11 +1,11 @@
 from functools import partial
 import sys
-# import os
+import os
 import cv2
 import numpy as np
 
 
-# os.chdir(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QLineEdit, QPushButton
 from PyQt5.QtGui import QIcon, QImage, QPixmap, QPainter, QPen
@@ -39,10 +39,10 @@ class Ui(QWidget, Ui_app_widget):
         self.thermal_resize_img = None
         
         
-        # self.camera_img = cv2.imread('misc/14.jpg')
+        # self.camera_img = cv2.imread('misc/C.png')
         # self.camera_resize_img = self.camera_img.copy()
         
-        # self.thermal_img = cv2.imread('misc/7.jpg')
+        # self.thermal_img = cv2.imread('misc/T.png')
         # self.thermal_resize_img = self.thermal_img.copy()
         
 
