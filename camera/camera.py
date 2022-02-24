@@ -104,7 +104,7 @@ class Ui(QWidget, Ui_app_widget):
         if self.camera is not None and isinstance(self.camera, cv2.VideoCapture) and self.camera.isOpened():
             ret, frame = self.camera.read()
             if ret:
-                frame = resize_to_width(frame, 1080, -90)
+                frame = resize_to_width(frame, 1080, 90)
                 self.camera_img = frame
                 self.zoom_by_radio('camera', self.camera_label, self.camera_ratio_spin)
             else:
@@ -118,7 +118,7 @@ class Ui(QWidget, Ui_app_widget):
                 thermal_result = thermal_result.copy()
                 # thermal_result[thermal_result < 30] = 0
                 thermal_result = enhance_thermal_contrast(thermal_result, True)
-                thermal_result = resize_to_width(thermal_result, 120)
+                thermal_result = resize_to_width(thermal_result, 120, 180)
                 self.thermal_img = thermal_result
                 self.zoom_by_radio('thermal', self.thermal_label, self.thermal_ratio_spin)
     
@@ -140,8 +140,8 @@ class Ui(QWidget, Ui_app_widget):
             th, tw, _ = self.thermal_img.shape
             x1, y1 = offset
             x2, y2 = offset + np.array([tw, th]) * ratio
-            text = ('倍率:{:.1f} 左右誤差:{:d} 上下誤差:{:d}  旋轉誤差:{:.2f}'.format(
-                ratio, int(w-x1-x2), int(h-y1-y2), angle_diff))
+            text = ('倍率:{:.1f} 左右誤差:{:d} 上下誤差:{:d}  旋轉誤差:{:.2f} tlbr:({:d}, {:d}, {:d}, {:d})'.format(
+                ratio, int(w-x1-x2), int(h-y1-y2), angle_diff), x1, y1, x2, y2)
                         
             stat_widget = QWidget()        
             stat_layout = QHBoxLayout()
@@ -169,8 +169,8 @@ class Ui(QWidget, Ui_app_widget):
             th, tw, _ = self.thermal_img.shape
             x1, y1 = offset
             x2, y2 = offset + np.array([tw, th]) * ratio
-            text = ('倍率:{:.1f} 左右誤差:{:d} 上下誤差:{:d}  旋轉誤差:{:.2f}'.format(
-                ratio, int(w-x1-x2), int(h-y1-y2), angle_diff))
+            text = ('倍率:{:.1f} 左右誤差:{:d} 上下誤差:{:d}  旋轉誤差:{:.2f} tlbr:({:d}, {:d}, {:d}, {:d})'.format(
+                ratio, int(w-x1-x2), int(h-y1-y2), angle_diff), x1, y1, x2, y2)
             self.result_line.setText(text)
             self.result_line.setReadOnly(True)
 
