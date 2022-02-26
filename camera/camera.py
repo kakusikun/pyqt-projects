@@ -132,16 +132,16 @@ class Ui(QWidget, Ui_app_widget):
             cpts = self.get_points(self.pos_camera_vlayout) / self.camera_ratio_spin.value()
             tpts = self.get_points(self.pos_thermal_vlayout) / self.thermal_ratio_spin.value()
             ratio, angle_diff, offset = get_stats(cpts, tpts)
-            self.ratios.append(ratio)
-            self.angle_diffs.append(angle_diff)
-            self.offsets.append(offset)
+            self.ratios.insert(0, ratio)
+            self.angle_diffs.insert(0, angle_diff)
+            self.offsets.insert(0, offset)
 
             h, w, _ = self.camera_img.shape
             th, tw, _ = self.thermal_img.shape
             x1, y1 = offset
             x2, y2 = offset + np.array([tw, th]) * ratio
             text = ('倍率:{:.1f} 左右誤差:{:d} 上下誤差:{:d}  旋轉誤差:{:.2f} tlbr:({:d}, {:d}, {:d}, {:d})'.format(
-                ratio, int(w-x1-x2), int(h-y1-y2), angle_diff), x1, y1, x2, y2)
+                ratio, int(w-x1-x2), int(h-y1-y2), angle_diff, int(x1), int(y1), int(x2), int(y2)))
                         
             stat_widget = QWidget()        
             stat_layout = QHBoxLayout()
@@ -156,7 +156,9 @@ class Ui(QWidget, Ui_app_widget):
             self.stats_layout.insertWidget(0, stat_widget)
             
     def _calculate(self):
-        if self.camera_img is not None and self.thermal_img is not None:
+        if (self.camera_img is not None 
+                and self.thermal_img is not None
+                and len(self.ratios) > 0):
             ratios = np.array(self.ratios)
             angle_diffs = np.array(self.angle_diffs)
             offsets = np.array(self.offsets)
@@ -170,7 +172,7 @@ class Ui(QWidget, Ui_app_widget):
             x1, y1 = offset
             x2, y2 = offset + np.array([tw, th]) * ratio
             text = ('倍率:{:.1f} 左右誤差:{:d} 上下誤差:{:d}  旋轉誤差:{:.2f} tlbr:({:d}, {:d}, {:d}, {:d})'.format(
-                ratio, int(w-x1-x2), int(h-y1-y2), angle_diff), x1, y1, x2, y2)
+                ratio, int(w-x1-x2), int(h-y1-y2), angle_diff, int(x1), int(y1), int(x2), int(y2)))
             self.result_line.setText(text)
             self.result_line.setReadOnly(True)
 
