@@ -1,29 +1,30 @@
 import sys
 import os
 os.chdir(os.path.dirname(__file__))
-from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QDialog
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QElapsedTimer, QTimer, Qt
+from PySide2 import QtWidgets, QtGui, QtCore
+from PySide2.QtCore import Qt
 
+
+from hint import Ui_hint
+from app_widget import Ui_app_widget
 
 __version__ = '0.0.1'
 
 
-class HintPopUp(QDialog):
+class HintPopUp(QtWidgets.QDialog, Ui_hint):
     def __init__(self, hint_text, parent) -> None:
         super().__init__(parent, Qt.WindowStaysOnTopHint)
-        uic.loadUi('misc/hint.ui', self)
+        self.setupUi(self)
         self.hint_label.setText(hint_text)
         self.setWindowTitle('Hint')
 
 
-class Ui(QtWidgets.QMainWindow):
-    def __init__(self):
-        super(Ui, self).__init__()
-        uic.loadUi('misc/timer.ui', self)
-        self._timer = QElapsedTimer()
-        self._display_timer = QTimer()
+class AppWidget(QtWidgets.QWidget, Ui_app_widget):
+    def __init__(self) -> None:
+        super().__init__()
+        self.setupUi(self)
+        self._timer = QtCore.QElapsedTimer()
+        self._display_timer = QtCore.QTimer()
         self._remaining_secs = 0
         self._remaining_repeat = 1
         self._pop_hint = None
@@ -32,9 +33,8 @@ class Ui(QtWidgets.QMainWindow):
         self.init_time_combo()
         self.init_timer_repeat()
         self.init_timer_lcd()
+        self.setLayout(self.app_layout)
 
-        self.setWindowTitle('Timer')
-        self.show()
 
     def _set_remaining_repeat(self, text):
         self._remaining_repeat = int(text)
@@ -78,7 +78,9 @@ class Ui(QtWidgets.QMainWindow):
 
     def init_timer_btn(self):
         self.play_pause_btn.toggled.connect(self.start)
+        self.play_pause_btn.setIcon(QtGui.QIcon("misc/play-button.png"))
         self.stop_btn.clicked.connect(self.stop)
+        self.stop_btn.setIcon(QtGui.QIcon("misc/stop-button.png"))
 
     def init_timer_lcd(self):
         self.timer_lcd.display('00:00:00')
@@ -116,14 +118,14 @@ class Ui(QtWidgets.QMainWindow):
 
     def start(self, checked):
         if not checked:
-            self.play_pause_btn.setIcon(QIcon("misc/play-button.png"))
+            self.play_pause_btn.setIcon(QtGui.QIcon("misc/play-button.png"))
         else:
             hour = int(self.hour_combo.currentText())
             minute = int(self.minute_combo.currentText())
             second = int(self.second_combo.currentText())
             remaining_secs = hour * 60 * 60 + minute * 60 + second
             if remaining_secs > 0:
-                self.play_pause_btn.setIcon(QIcon("misc/pause-button.png"))
+                self.play_pause_btn.setIcon(QtGui.QIcon("misc/pause-button.png"))
                 self.hour_combo.setEnabled(False)
                 self.minute_combo.setEnabled(False)
                 self.second_combo.setEnabled(False)
@@ -144,7 +146,7 @@ class Ui(QtWidgets.QMainWindow):
         self.minute_combo.setCurrentText('0')
         self.second_combo.setCurrentText('0')
 
-        self.play_pause_btn.setIcon(QIcon("misc/play-button.png"))
+        self.play_pause_btn.setIcon(QtGui.QIcon("misc/play-button.png"))
         self.play_pause_btn.setChecked(False)
 
         self.forever_radio.setChecked(False)
@@ -153,6 +155,14 @@ class Ui(QtWidgets.QMainWindow):
         self.forever_radio.setEnabled(True)
         self.repeat_radio.setEnabled(True)
 
+        
+class Ui(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(Ui, self).__init__()
+        self.app_widget = AppWidget()
+        self.setCentralWidget(self.app_widget)
+        self.setWindowTitle('Timer')
+        self.show()
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
