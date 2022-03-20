@@ -166,6 +166,22 @@ class Ui_app_widget(object):
 
         self.verticalLayout.addWidget(self.hint_line)
 
+        self.horizontalLayout_7 = QHBoxLayout()
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.hide_btn = QPushButton(self.layoutWidget)
+        self.hide_btn.setObjectName(u"hide_btn")
+
+        self.horizontalLayout_7.addWidget(self.hide_btn)
+
+        self.exit_btn = QPushButton(self.layoutWidget)
+        self.exit_btn.setObjectName(u"exit_btn")
+        self.exit_btn.setStyleSheet(u"QPushButton:checked {color: white;}")
+
+        self.horizontalLayout_7.addWidget(self.exit_btn)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_7)
+
 
         self.app_layout.addLayout(self.verticalLayout)
 
@@ -186,5 +202,7 @@ class Ui_app_widget(object):
         self.repeat_radio.setText(QCoreApplication.translate("app_widget", u"repeat", None))
         self.hint_line.setText("")
         self.hint_line.setPlaceholderText(QCoreApplication.translate("app_widget", u"hint text", None))
+        self.hide_btn.setText(QCoreApplication.translate("app_widget", u"running backgroud", None))
+        self.exit_btn.setText(QCoreApplication.translate("app_widget", u"close", None))
     # retranslateUi
 

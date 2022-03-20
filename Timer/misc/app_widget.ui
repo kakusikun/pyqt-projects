@@ -260,6 +260,27 @@
         </property>
        </widget>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="QPushButton" name="hide_btn">
+          <property name="text">
+           <string>running backgroud</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="exit_btn">
+          <property name="styleSheet">
+           <string notr="true">QPushButton:checked {color: white;}</string>
+          </property>
+          <property name="text">
+           <string>close</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </item>
    </layout>

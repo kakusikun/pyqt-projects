@@ -1,7 +1,9 @@
 import sys
 import os
 os.chdir(os.path.dirname(__file__))
-from PySide2 import QtWidgets, QtGui, QtCore
+from PySide2 import QtWidgets as qtw
+from PySide2 import QtGui as qtg
+from PySide2 import QtCore as qtc
 from PySide2.QtCore import Qt
 
 
@@ -11,7 +13,7 @@ from app_widget import Ui_app_widget
 __version__ = '0.0.1'
 
 
-class HintPopUp(QtWidgets.QDialog, Ui_hint):
+class HintPopUp(qtw.QDialog, Ui_hint):
     def __init__(self, hint_text, parent) -> None:
         super().__init__(parent, Qt.WindowStaysOnTopHint)
         self.setupUi(self)
@@ -19,12 +21,12 @@ class HintPopUp(QtWidgets.QDialog, Ui_hint):
         self.setWindowTitle('Hint')
 
 
-class AppWidget(QtWidgets.QWidget, Ui_app_widget):
+class AppWidget(qtw.QWidget, Ui_app_widget):
     def __init__(self) -> None:
         super().__init__()
         self.setupUi(self)
-        self._timer = QtCore.QElapsedTimer()
-        self._display_timer = QtCore.QTimer()
+        self._timer = qtc.QElapsedTimer()
+        self._display_timer = qtc.QTimer()
         self._remaining_secs = 0
         self._remaining_repeat = 1
         self._pop_hint = None
@@ -33,6 +35,7 @@ class AppWidget(QtWidgets.QWidget, Ui_app_widget):
         self.init_time_combo()
         self.init_timer_repeat()
         self.init_timer_lcd()
+        self.init_btn(self.app_layout)
         self.setLayout(self.app_layout)
 
 
@@ -73,14 +76,25 @@ class AppWidget(QtWidgets.QWidget, Ui_app_widget):
             time_str = f'{hour:02}:{minute:02}:{second:02}'
             self.timer_lcd.display(time_str)
 
+    def init_btn(self, layout):
+        children = [layout.itemAt(i) for i in range(layout.count())]
+        for child in children:
+            if isinstance(child, qtw.QLayout):
+                self.init_btn(child)
+            elif isinstance(child, qtw.QWidgetItem):
+                widget = child.widget()
+                if isinstance(widget, qtw.QPushButton):
+                    widget.setStyleSheet("background-color: white;")
+
     def init_timer(self):
         self._display_timer.timeout.connect(self._display_lcd)
 
     def init_timer_btn(self):
         self.play_pause_btn.toggled.connect(self.start)
-        self.play_pause_btn.setIcon(QtGui.QIcon("misc/play-button.png"))
+        self.play_pause_btn.setIcon(qtg.QIcon("misc/play-button.png"))
         self.stop_btn.clicked.connect(self.stop)
-        self.stop_btn.setIcon(QtGui.QIcon("misc/stop-button.png"))
+        self.stop_btn.setIcon(qtg.QIcon("misc/stop-button.png"))
+        
 
     def init_timer_lcd(self):
         self.timer_lcd.display('00:00:00')
@@ -108,7 +122,7 @@ class AppWidget(QtWidgets.QWidget, Ui_app_widget):
 
         self.repeat_radio.setChecked(True)
         self.repeat_radio.toggled.connect(self._enable_repeat_combo)
-
+          
     def set_timer_lcd_display(self):
         hour = int(self.hour_combo.currentText())
         minute = int(self.minute_combo.currentText())
@@ -118,14 +132,14 @@ class AppWidget(QtWidgets.QWidget, Ui_app_widget):
 
     def start(self, checked):
         if not checked:
-            self.play_pause_btn.setIcon(QtGui.QIcon("misc/play-button.png"))
+            self.play_pause_btn.setIcon(qtg.QIcon("misc/play-button.png"))
         else:
             hour = int(self.hour_combo.currentText())
             minute = int(self.minute_combo.currentText())
             second = int(self.second_combo.currentText())
             remaining_secs = hour * 60 * 60 + minute * 60 + second
             if remaining_secs > 0:
-                self.play_pause_btn.setIcon(QtGui.QIcon("misc/pause-button.png"))
+                self.play_pause_btn.setIcon(qtg.QIcon("misc/pause-button.png"))
                 self.hour_combo.setEnabled(False)
                 self.minute_combo.setEnabled(False)
                 self.second_combo.setEnabled(False)
@@ -146,7 +160,7 @@ class AppWidget(QtWidgets.QWidget, Ui_app_widget):
         self.minute_combo.setCurrentText('0')
         self.second_combo.setCurrentText('0')
 
-        self.play_pause_btn.setIcon(QtGui.QIcon("misc/play-button.png"))
+        self.play_pause_btn.setIcon(qtg.QIcon("misc/play-button.png"))
         self.play_pause_btn.setChecked(False)
 
         self.forever_radio.setChecked(False)
@@ -154,17 +168,56 @@ class AppWidget(QtWidgets.QWidget, Ui_app_widget):
 
         self.forever_radio.setEnabled(True)
         self.repeat_radio.setEnabled(True)
-
+        parent = self.parent()
+        if parent is not None:
+            parent.show()
         
-class Ui(QtWidgets.QMainWindow):
+        
+class Ui(qtw.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()
         self.app_widget = AppWidget()
+        self.app_widget.setParent(self)
         self.setCentralWidget(self.app_widget)
         self.setWindowTitle('Timer')
+        self.init_tray()
+        self.init_btn()
+        self.setWindowFlag(Qt.FramelessWindowHint)
         self.show()
 
+    def _tray_clicked(self, reason):
+        if reason == qtw.QSystemTrayIcon.DoubleClick:
+            self.tray.setVisible(False)
+            self.show()
+            
+    def _running_backgroud(self):
+        self.tray.setVisible(True)
+        self.tray.showMessage('Timer', 'Running backgroud')
+        self.hide()
+    
+    def init_tray(self):
+        icon = qtg.QIcon("misc/bell.png")
+        self.tray = qtw.QSystemTrayIcon()
+        self.tray.setIcon(icon)
+        self.tray.setVisible(False)
+        menu = qtw.QMenu()
+        action_quit = menu.addAction("Quit")
+        action_quit.triggered.connect(self.close_app)
+        self.tray.setContextMenu(menu)     
+        self.tray.show()
+        self.tray.activated.connect(self._tray_clicked)
+        
+    def init_btn(self):
+        self.app_widget.hide_btn.clicked.connect(self._running_backgroud)
+        self.app_widget.exit_btn.clicked.connect(self.close_app)
+        self.app_widget.exit_btn.setStyleSheet("background-color: red; color: white;")
+    
+    def close_app(self):
+        app = qtc.QCoreApplication.instance()
+        app.quit()
+
 if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
+    app = qtw.QApplication(sys.argv)
+    app.setQuitOnLastWindowClosed(False)
     window = Ui()
     app.exec_()
